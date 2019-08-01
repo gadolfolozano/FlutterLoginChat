@@ -7,7 +7,11 @@ class LoginScreen extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        brightness: Brightness.dark,
+        primaryColor: Color(0xffEb4568),
+        accentColor: Colors.white,
+        buttonColor: Color(0xff61c9bf),
+        disabledColor: Colors.grey,
       ),
       home: Scaffold(
         appBar: AppBar(

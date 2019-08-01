@@ -38,7 +38,8 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return Container(
+      color: const Color(0xff2b2f3d),
       child: Form(
         key: _formKey,
         child: Column(
@@ -51,7 +52,7 @@ class _LoginFormState extends State<LoginForm> {
               child: TextFormField(
                 autofocus: true,
                 decoration: InputDecoration(
-                    hintText: 'Email adressxyz:',
+                    hintText: 'Email adress:',
                     prefixIcon: Icon(
                       Icons.mail_outline,
                     )),
@@ -88,12 +89,21 @@ class _LoginFormState extends State<LoginForm> {
               child: Container(),
             ),
             Container(
+              width: double.infinity,
               margin: const EdgeInsets.only(left: 24, right: 24),
               child: RaisedButton(
                 onPressed:
-                _loginButtonEnabled ? () => performLogin(context) : null,
+                    _loginButtonEnabled ? () => performLogin(context) : null,
                 child: Text('Login', style: TextStyle(fontSize: 20)),
+                padding: const EdgeInsets.only(top: 12, bottom: 12),
               ),
+            ),
+            Container(
+              width: double.infinity,
+              margin: const EdgeInsets.only(top: 8, left: 24, right: 24),
+              child: FlatButton(
+                  onPressed: () {},
+                  child: Text('Register', style: TextStyle(fontSize: 16))),
             ),
             Container(
               height: 64,
@@ -136,8 +146,9 @@ class _LoginFormState extends State<LoginForm> {
 
   _checkUserInputs() {
     setState(() {
-      _loginButtonEnabled = ValidatorUtil.isEmailValid(usernameController.text) &&
-          ValidatorUtil.isPasswordValid(passwordController.text);
+      _loginButtonEnabled =
+          ValidatorUtil.isEmailValid(usernameController.text) &&
+              ValidatorUtil.isPasswordValid(passwordController.text);
     });
   }
 }
