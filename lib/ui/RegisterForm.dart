@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import '../util/ValidatorUtil.dart';
 
-class LoginForm extends StatefulWidget {
-  LoginForm({Key key, @required this.onShowRegister}) : super(key: key);
-
-  final Function onShowRegister;
-
+class RegisterForm extends StatefulWidget {
   @override
-  _LoginFormState createState() => _LoginFormState();
+  _RegisterFormState createState() => _RegisterFormState();
 }
 
-class _LoginFormState extends State<LoginForm> {
+class _RegisterFormState extends State<RegisterForm> {
   FocusNode passwordFocusNode;
+  FocusNode rePasswordFocusNode;
   TextEditingController usernameController;
   TextEditingController passwordController;
+  TextEditingController rePasswordController;
   GlobalKey<FormState> _formKey;
   bool _loginButtonEnabled;
 
@@ -23,12 +20,15 @@ class _LoginFormState extends State<LoginForm> {
     super.initState();
 
     passwordFocusNode = FocusNode();
+    rePasswordFocusNode = FocusNode();
     usernameController = TextEditingController();
     passwordController = TextEditingController();
+    rePasswordController = TextEditingController();
     _formKey = GlobalKey<FormState>();
 
     usernameController.addListener(_handleUsernameChange);
     passwordController.addListener(_handlePasswordChange);
+    rePasswordController.addListener(_handleRePasswordChange);
 
     _loginButtonEnabled = false;
   }
@@ -36,8 +36,10 @@ class _LoginFormState extends State<LoginForm> {
   @override
   void dispose() {
     passwordFocusNode.dispose();
+    rePasswordFocusNode.dispose();
     usernameController.dispose();
     passwordController.dispose();
+    rePasswordController.dispose();
     super.dispose();
   }
 
@@ -76,11 +78,28 @@ class _LoginFormState extends State<LoginForm> {
                       Icons.lock_outline,
                     )),
                 obscureText: true,
-                textInputAction: TextInputAction.done,
+                textInputAction: TextInputAction.next,
                 focusNode: passwordFocusNode,
-                onFieldSubmitted: (term) => performLogin(context),
+                onFieldSubmitted: (term) =>
+                    FocusScope.of(context).requestFocus(rePasswordFocusNode),
                 controller: passwordController,
                 validator: (value) => validatePassword(value),
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(top: 12, left: 24, right: 24),
+              child: TextFormField(
+                decoration: InputDecoration(
+                    hintText: 'Confirm Password:',
+                    prefixIcon: Icon(
+                      Icons.lock_outline,
+                    )),
+                obscureText: true,
+                textInputAction: TextInputAction.done,
+                focusNode: rePasswordFocusNode,
+                onFieldSubmitted: (term) => performLogin(context),
+                controller: rePasswordController,
+                validator: (value) => validateRePassword(value),
               ),
             ),
             Expanded(
@@ -92,16 +111,9 @@ class _LoginFormState extends State<LoginForm> {
               child: RaisedButton(
                 onPressed:
                     _loginButtonEnabled ? () => performLogin(context) : null,
-                child: Text('Login', style: TextStyle(fontSize: 20)),
+                child: Text('Register', style: TextStyle(fontSize: 20)),
                 padding: const EdgeInsets.only(top: 12, bottom: 12),
               ),
-            ),
-            Container(
-              width: double.infinity,
-              margin: const EdgeInsets.only(top: 8, left: 24, right: 24),
-              child: FlatButton(
-                  onPressed: () => widget.onShowRegister(),
-                  child: Text('Register', style: TextStyle(fontSize: 16))),
             ),
             Container(
               height: 64,
@@ -126,6 +138,13 @@ class _LoginFormState extends State<LoginForm> {
     return null;
   }
 
+  String validateRePassword(String password) {
+    if (password != passwordController.text) {
+      return 'Password does not match';
+    }
+    return null;
+  }
+
   performLogin(BuildContext context) {
     FocusScope.of(context).requestFocus(new FocusNode());
     if (_formKey.currentState.validate()) {
@@ -142,11 +161,16 @@ class _LoginFormState extends State<LoginForm> {
     _checkUserInputs();
   }
 
+  _handleRePasswordChange() {
+    _checkUserInputs();
+  }
+
   _checkUserInputs() {
     setState(() {
       _loginButtonEnabled =
           ValidatorUtil.isEmailValid(usernameController.text) &&
-              ValidatorUtil.isPasswordValid(passwordController.text);
+              ValidatorUtil.isPasswordValid(passwordController.text) &&
+              ValidatorUtil.isPasswordValid(rePasswordController.text);
     });
   }
 }
