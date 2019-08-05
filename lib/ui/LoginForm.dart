@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../util/ValidatorUtil.dart';
 
 class LoginForm extends StatefulWidget {
@@ -17,6 +18,8 @@ class _LoginFormState extends State<LoginForm> {
   TextEditingController passwordController;
   GlobalKey<FormState> _formKey;
   bool _loginButtonEnabled;
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   void initState() {
@@ -129,9 +132,22 @@ class _LoginFormState extends State<LoginForm> {
   performLogin(BuildContext context) {
     FocusScope.of(context).requestFocus(new FocusNode());
     if (_formKey.currentState.validate()) {
-      Scaffold.of(context)
-          .showSnackBar(SnackBar(content: Text('Processing Data')));
+      _handleSignInUser(usernameController.text, passwordController.text)
+          .then((FirebaseUser user) =>
+              _onLoginSuccess(context, passwordController.text))
+          .catchError((e) => print(e));
     }
+  }
+
+  _onLoginSuccess(BuildContext context, String email) {
+    Scaffold.of(context)
+        .showSnackBar(SnackBar(content: Text('_onLoginSuccess $email')));
+  }
+
+  Future<FirebaseUser> _handleSignInUser(String email, String password) async {
+    return (await _auth.signInWithEmailAndPassword(
+            email: email, password: password))
+        .user;
   }
 
   _handleUsernameChange() {
