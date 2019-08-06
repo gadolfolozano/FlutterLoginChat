@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import 'common/LoadingModalWidget.dart';
 import '../util/ValidatorUtil.dart';
 
 class LoginForm extends StatefulWidget {
@@ -132,10 +134,15 @@ class _LoginFormState extends State<LoginForm> {
   performLogin(BuildContext context) {
     FocusScope.of(context).requestFocus(new FocusNode());
     if (_formKey.currentState.validate()) {
+      _showLoading(context);
       _handleSignInUser(usernameController.text, passwordController.text)
-          .then((FirebaseUser user) =>
-              _onLoginSuccess(context, passwordController.text))
-          .catchError((e) => print(e));
+          .then((FirebaseUser user) {
+        _hideLoading(context);
+        _onLoginSuccess(context, passwordController.text);
+      }).catchError((e) {
+        _hideLoading(context);
+        print(e);
+      });
     }
   }
 
@@ -164,5 +171,13 @@ class _LoginFormState extends State<LoginForm> {
           ValidatorUtil.isEmailValid(usernameController.text) &&
               ValidatorUtil.isPasswordValid(passwordController.text);
     });
+  }
+
+  _showLoading(BuildContext context) {
+    Navigator.of(context).push(LoadingModalWidget());
+  }
+
+  _hideLoading(BuildContext context) {
+    Navigator.pop(context);
   }
 }

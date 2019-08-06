@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../util/ValidatorUtil.dart';
+import 'common/LoadingModalWidget.dart';
 
 class RegisterForm extends StatefulWidget {
   @override
@@ -151,9 +152,15 @@ class _RegisterFormState extends State<RegisterForm> {
   performLogin(BuildContext context) {
     FocusScope.of(context).requestFocus(new FocusNode());
     if (_formKey.currentState.validate()) {
+      _showLoading(context);
       _handleRegisterUser(usernameController.text, passwordController.text)
-          .then((FirebaseUser user) => _onRegisterSuccess(context, user.email))
-          .catchError((e) => print(e));
+          .then((user) {
+        _hideLoading(context);
+        _onRegisterSuccess(context, user.email);
+      }).catchError((e) {
+        _hideLoading(context);
+        print(e);
+      });
     }
   }
 
@@ -188,5 +195,13 @@ class _RegisterFormState extends State<RegisterForm> {
               ValidatorUtil.isPasswordValid(passwordController.text) &&
               ValidatorUtil.isPasswordValid(rePasswordController.text);
     });
+  }
+
+  _showLoading(BuildContext context) {
+    Navigator.of(context).push(LoadingModalWidget());
+  }
+
+  _hideLoading(BuildContext context) {
+    Navigator.pop(context);
   }
 }
