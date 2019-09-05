@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
-import 'common/LoadingModalWidget.dart';
-import '../util/ValidatorUtil.dart';
+import 'package:flutter_login_chat/ui/common/LoadingModalWidget.dart';
+import 'package:flutter_login_chat/ui/dashboard/DashboardScreen.dart';
+import 'package:flutter_login_chat/util/ValidatorUtil.dart';
 
 class LoginForm extends StatefulWidget {
   LoginForm({Key key, @required this.onShowRegister}) : super(key: key);
@@ -147,8 +147,10 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   _onLoginSuccess(BuildContext context, String email) {
-    Scaffold.of(context)
-        .showSnackBar(SnackBar(content: Text('_onLoginSuccess $email')));
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => DashboardScreen()),
+    );
   }
 
   Future<FirebaseUser> _handleSignInUser(String email, String password) async {

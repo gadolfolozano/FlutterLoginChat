@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'LoginForm.dart';
-import 'RegisterForm.dart';
+import 'package:flutter_login_chat/ui/login/LoginForm.dart';
+import 'package:flutter_login_chat/ui/login/RegisterForm.dart';
 
 class LoginScreen extends StatefulWidget {
   @override

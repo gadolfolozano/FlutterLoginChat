@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../util/ValidatorUtil.dart';
-import 'common/LoadingModalWidget.dart';
+import 'package:flutter_login_chat/ui/common/LoadingModalWidget.dart';
+import 'package:flutter_login_chat/util/ValidatorUtil.dart';
 
 class RegisterForm extends StatefulWidget {
   @override

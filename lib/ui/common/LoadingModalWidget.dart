@@ -39,11 +39,7 @@ class LoadingModalWidget extends ModalRoute<void> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          CircularProgressIndicator(),
-          RaisedButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text('Dismiss'),
-          )
+          CircularProgressIndicator()
         ],
       ),
     );
