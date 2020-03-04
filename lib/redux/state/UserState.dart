@@ -13,6 +13,6 @@ class UserState {
   });
 
   factory UserState.initial() {
-    return new UserState(isLoading: false, loginError: false, userName: null);
+    return new UserState(isLoading: false, loginError: false, userName: 'userName');
   }
 }
