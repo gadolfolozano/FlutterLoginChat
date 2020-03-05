@@ -65,6 +65,7 @@ padding: const EdgeInsets.only(top: 12, bottom: 12),
 ),
 )*/
 
+/*
 class _SplashContent2 extends StatefulWidget {
   @override
   _SplashContentState createState() => _SplashContentState();
@@ -99,3 +100,5 @@ class _SplashContentState extends State<_SplashContent2> {
     });
   }
 }
+
+ */
