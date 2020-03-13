@@ -7,7 +7,6 @@ import 'package:flutter_login_chat/ui/splash/SplashViewModel.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
 class SplashScreen extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -33,6 +32,7 @@ class _SplashContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, SplashViewModel>(
       converter: (store) => SplashViewModel.fromStore(store),
+      onInit: (store) => print('onInit called'),
       builder: (_, viewModel) {
         return Column(
           children: <Widget>[

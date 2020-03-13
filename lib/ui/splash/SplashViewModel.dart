@@ -3,17 +3,26 @@ import 'package:flutter_login_chat/redux/state/AppState.dart';
 import 'package:redux/redux.dart';
 
 class SplashViewModel {
+  final Store<AppState> store;
   final String username;
-  final Function dummyFunction;
 
-  SplashViewModel({this.username, this.dummyFunction});
+  SplashViewModel({this.store, this.username});
 
   static SplashViewModel fromStore(Store<AppState> store) {
-    return SplashViewModel(
-        username: store.state.userState.userName,
-        dummyFunction: () {
-          print('dummyFunction called dispatching');
-          store.dispatch(DummyAction());
-        });
+    SplashViewModel viewModel = SplashViewModel(
+      store: store,
+      username: store.state.userState.userName,
+    );
+    viewModel.checkUserLogin();
+    return viewModel;
+  }
+
+  void checkUserLogin() {
+    print('checkUserLogin called');
+  }
+
+  void dummyFunction() {
+    print('dummyFunction called dispatching');
+    store.dispatch(DummyAction());
   }
 }
