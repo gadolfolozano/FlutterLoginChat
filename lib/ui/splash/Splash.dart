@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_login_chat/redux/action/CheckUserLoggedAction.dart';
 import 'package:flutter_login_chat/redux/state/AppState.dart';
 import 'package:flutter_login_chat/ui/dashboard/DashboardScreen.dart';
 import 'package:flutter_login_chat/ui/login/LoginScreen.dart';
@@ -32,7 +33,7 @@ class _SplashContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, SplashViewModel>(
       converter: (store) => SplashViewModel.fromStore(store),
-      onInit: (store) => print('onInit called'),
+      onInit: (store) => store.dispatch(checkUserLoggedAction()),
       builder: (_, viewModel) {
         return Column(
           children: <Widget>[
